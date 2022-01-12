@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "start": "pm2 start app.js --name aelf-explore-socket --exp-backoff-restart-delay=1000 --time",
+    "commit": "git-cz"
+  },
+  "dependencies": {
+    "aelf-sdk": "^3.2.39",
+    "redis": "^4.0.1",
+    "socket.io": "^4.4.1"
+  }
+}
