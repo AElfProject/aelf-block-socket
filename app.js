@@ -1,24 +1,10 @@
 const { createServer } = require("http");
-// const { Server } = require("socket.io");
 const {producedBlocks} = require('./src/chain');
 const {INTERVAL} = require('./config');
 const httpServer = createServer();
 const io = require("socket.io")(httpServer, {
-  path: '/new-socket',
-  origins: [
-    "http://127.0.0.1:3001",
-    "http://127.0.0.1:3000",
-    "http://127.0.0.1:3002",
-    "http://localhost:3002"
-  ]
+  path: '/new-socket'
 });
-//
-// const io = new Server(httpServer, {
-//   cors: {
-//     origin: "*",
-//     methods: ["GET", "POST"]
-//   }
-// });
 
 let producedBlocksCache = {};
 
