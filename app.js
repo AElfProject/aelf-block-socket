@@ -24,8 +24,11 @@ let producedBlocksCache = {};
 
 init();
 async function init () {
-  producedBlocksCache = await producedBlocks();
-  loopRefreshProducedBlocks();
+  try {
+    producedBlocksCache = await producedBlocks();
+  } catch(error) {
+    console.log('producedBlocksCache first update error', error);
+  }
 
   io.on("connection", (socket) => {
     // socket.on('event', data => { /* … */ });
