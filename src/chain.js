@@ -62,6 +62,6 @@ async function producedBlocks() {
   for (const [key, value] of Object.entries(producedBlocksCurrent)) {
     producedBlocks[key] = producedBlocksHistory[key] ? +producedBlocksHistory[key] + +value : +value;
   }
-  console.log('producedBlocks', producedBlocks);
+  // console.log('producedBlocks', producedBlocks);
   return producedBlocks;
 }

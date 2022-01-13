@@ -6,6 +6,6 @@
   "dependencies": {
     "aelf-sdk": "^3.2.39",
     "redis": "^4.0.1",
-    "socket.io": "^4.4.1"
+    "socket.io": "^2.3.0"
   }
 }
