@@ -19,7 +19,7 @@ async function consensus () {
   // console.log('currentRoundInformation', currentRoundInformation);
   console.log('get currentRoundInformation done',);
   if (!currentRoundInformation || !currentRoundInformation.realTimeMinersInformation) {
-    return;
+    throw Error('No currentRoundInformation');
   }
   const {realTimeMinersInformation} = currentRoundInformation;
   const producedBlocksCurrent = {};
@@ -40,7 +40,7 @@ async function election() {
   // console.log('GetPageableCandidateInformation done', pageableCandidateInformation);
   console.log('GetPageableCandidateInformation done');
   if (!pageableCandidateInformation || !pageableCandidateInformation.value || !pageableCandidateInformation.value.length) {
-    return;
+    throw Error('No PageableCandidateInformation');
   }
   const producedBlocksHistory = {}
   pageableCandidateInformation.value.forEach(item => {
