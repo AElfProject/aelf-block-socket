@@ -37,20 +37,27 @@ async function consensus () {
   return producedBlocksCurrent;
 }
 async function election() {
-  let pageableCandidateInformation;
+  let pageableCandidateInformation = {value: []};
   try {
     console.log('init election');
     const electionContract = await aelf.chain.contractAt(ELECTION_ADDRESS, newWallet);
     console.log('Election contract init done');
-    pageableCandidateInformation = await electionContract.GetPageableCandidateInformation.call({
-      start: 0,
-      length: 100000000
-    });
+    const candidates = await electionContract.GetCandidates.call();
+    const candidatesAmount = candidates.value.length;
+    for (let index = 0; index < candidatesAmount; index += 20) {
+      const candidateInformation = await electionContract.GetPageableCandidateInformation.call({
+        start: index,
+        length: 20
+      });
+      pageableCandidateInformation.value = [
+        ...pageableCandidateInformation.value,
+        ...candidateInformation.value
+      ];
+    }
   } catch(error) {
     console.log('GetPageableCandidateInformation error', error);
     return {};
   }
-  // console.log('GetPageableCandidateInformation done', pageableCandidateInformation);
   console.log('GetPageableCandidateInformation done');
   const producedBlocksHistory = {}
 
@@ -61,7 +68,6 @@ async function election() {
     const {pubkey, producedBlocks} = item.candidateInformation;
     producedBlocksHistory[pubkey] = producedBlocks;
   });
-  // console.log('producedBlocksHistory', producedBlocksHistory);
   return producedBlocksHistory;
 }
 
@@ -76,6 +82,6 @@ async function producedBlocks() {
   for (const [key, value] of Object.entries(producedBlocksCurrent)) {
     producedBlocks[key] = producedBlocksHistory[key] ? +producedBlocksHistory[key] + +value : +value;
   }
-  // console.log('producedBlocks', producedBlocks);
+  console.log('producedBlocks', producedBlocks, Object.keys(producedBlocks).length);
   return producedBlocks;
 }
