@@ -58,7 +58,6 @@ async function election() {
     console.log('GetPageableCandidateInformation error', error);
     return {};
   }
-  // console.log('GetPageableCandidateInformation done', pageableCandidateInformation);
   console.log('GetPageableCandidateInformation done');
   const producedBlocksHistory = {}
 
@@ -69,7 +68,6 @@ async function election() {
     const {pubkey, producedBlocks} = item.candidateInformation;
     producedBlocksHistory[pubkey] = producedBlocks;
   });
-  // console.log('producedBlocksHistory', producedBlocksHistory);
   return producedBlocksHistory;
 }
 
@@ -81,12 +79,9 @@ async function producedBlocks() {
 
   const producedBlocks = {};
 
-  for (const [key, value] of Object.entries(producedBlocksHistory)) {
-    producedBlocks[key] = producedBlocksCurrent[key] ? +producedBlocksCurrent[key] + +value : +value;
+  for (const [key, value] of Object.entries(producedBlocksCurrent)) {
+    producedBlocks[key] = producedBlocksHistory[key] ? +producedBlocksHistory[key] + +value : +value;
   }
-  // for (const [key, value] of Object.entries(producedBlocksCurrent)) {
-  //   producedBlocks[key] = producedBlocksHistory[key] ? +producedBlocksHistory[key] + +value : +value;
-  // }
   console.log('producedBlocks', producedBlocks, Object.keys(producedBlocks).length);
   return producedBlocks;
 }
