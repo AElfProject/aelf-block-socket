@@ -12,7 +12,12 @@ const io = new Server(httpServer, {
 
 io.on("connection", (socket) => {
   socket.on('event', data => { /* … */ });
-  socket.on('disconnect', () => { /* … */ });
+  socket.on('error', () => {
+    socket.disconnect(true);
+  });
+  socket.on('disconnect', () => {
+    socket.conn.close();
+  });
 
   const loop = function () {
     setTimeout(() => {
