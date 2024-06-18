@@ -11,12 +11,22 @@ const aelf = new AElf(
 
 const newWallet = AElf.wallet.createNewWallet();
 
-async function consensus () {
+const CONTRACT_LIST = {};
+async function getContractSingleton(contractAddress, wallet, name) {
+  if (CONTRACT_LIST[name]) {
+    return CONTRACT_LIST[name];
+  }
+  const contract = await aelf.chain.contractAt(contractAddress, wallet);
+  CONTRACT_LIST[name] = contract;
+  return contract;
+}
 
+
+async function consensus () {
   let currentRoundInformation;
   try {
     console.log('init consensus');
-    const consensusContract = await aelf.chain.contractAt(CONSENSUS_ADDRESS, newWallet);
+    const consensusContract = getContractSingleton(CONSENSUS_ADDRESS, newWallet, 'consensus');
     console.log('Consensus contract init done');
     currentRoundInformation = await consensusContract.GetCurrentRoundInformation.call();
   } catch(error) {
@@ -40,7 +50,7 @@ async function election() {
   let pageableCandidateInformation = {value: []};
   try {
     console.log('init election');
-    const electionContract = await aelf.chain.contractAt(ELECTION_ADDRESS, newWallet);
+    const electionContract = getContractSingleton(ELECTION_ADDRESS, newWallet, 'election');
     console.log('Election contract init done');
     const candidates = await electionContract.GetCandidates.call();
     const candidatesAmount = candidates.value.length;

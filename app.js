@@ -20,9 +20,13 @@ async function init () {
     // socket.on('event', data => { /* … */ });
     socket.on('disconnect', () => {
       console.log('user disconnect', socket.id);
+      socket.conn.close();
     });
     socket.emit('produced_blocks', producedBlocksCache);
     console.log('user connect', socket.id, io.engine.clientsCount);
+    socket.on('error', () => {
+      socket.disconnect(true);
+    });
   });
 
   const loop = function () {
