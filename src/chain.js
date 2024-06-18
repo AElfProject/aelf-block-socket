@@ -26,7 +26,7 @@ async function consensus () {
   let currentRoundInformation;
   try {
     console.log('init consensus');
-    const consensusContract = getContractSingleton(CONSENSUS_ADDRESS, newWallet, 'consensus');
+    const consensusContract = await getContractSingleton(CONSENSUS_ADDRESS, newWallet, 'consensus');
     console.log('Consensus contract init done');
     currentRoundInformation = await consensusContract.GetCurrentRoundInformation.call();
   } catch(error) {
@@ -50,7 +50,7 @@ async function election() {
   let pageableCandidateInformation = {value: []};
   try {
     console.log('init election');
-    const electionContract = getContractSingleton(ELECTION_ADDRESS, newWallet, 'election');
+    const electionContract = await getContractSingleton(ELECTION_ADDRESS, newWallet, 'election');
     console.log('Election contract init done');
     const candidates = await electionContract.GetCandidates.call();
     const candidatesAmount = candidates.value.length;
